@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13.3
+    user: "${DOCKER_UID}:${DOCKER_GID}"
+    volumes:
+      - ${DB_DATA_PATH}:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:5432
+  redis:
+    image: redis
+  alert-api:
+    image: rosnova/base.project
+    depends_on:
+      - db
+    ports:
+      - ${ALERT_API_PORT}:3000
+    command: bash -c "npm run migration:run && npm run start:server"
+    env_file:
+      - ./.env
+      - ./docker.env
+  bot:
+    image: rosnova/base.project
+    depends_on:
+      - db
+    command: npm run start:bot
+    env_file:
+      - ./.env
+      - ./docker.env
+    volumes:
+      - ${LOG_PATH}:/logs
+  worker:
+    image: rosnova/base.project
+    ports:
+      - ${BULLBOADR_PORT}:${BULLBOADR_PORT}
+    depends_on:
+      - db
+      - redis
+      - alert-api
+    command: npm run start:workers
+    env_file:
+      - ./.env
+      - ./docker.env
+    volumes:
+      - ${LOG_PATH}:/logs

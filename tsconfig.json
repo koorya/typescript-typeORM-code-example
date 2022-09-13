@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "@orm/*": ["orm/*"],
+      "@entity/*": ["orm/entity/*"],
+      "@connections/*": ["server/connections/*"],
+      "@alert-service/*": ["server/*"],
+      "@common/*": ["common/*"]
+    },
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "resolveJsonModule": true,
+    "noFallthroughCasesInSwitch": false
+  },
+  "include": [
+    "server",
+    "bot",
+    "worker",
+    "scripts",
+    "event_manager",
+    "orm",
+    "common"
+  ],
+  "exclude": ["untracked_data, node_modules"]
+}

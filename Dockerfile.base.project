@@ -1,0 +1,7 @@
+FROM rosnova/base.node
+
+COPY . ./
+
+RUN npm run build:server
+
+
